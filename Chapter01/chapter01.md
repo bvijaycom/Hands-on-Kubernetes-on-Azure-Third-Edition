@@ -500,3 +500,11 @@ kubectl set image deployment azure-vote-front azure-vote-front=cnlacr1.azurecr.i
 ```
 kubectl get service azure-vote-front -n dev
 ```
+	
+
+# Demo Application Deployment
+	
+kubectl apply -f https://raw.githubusercontent.com/bvijaycom/Hands-on-Kubernetes-on-Azure-Third-Edition/main/Chapter02/azure-vote.yaml -n testing
+kubectl get all -n testing -o wide
+
+

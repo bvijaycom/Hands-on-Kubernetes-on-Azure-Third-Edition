@@ -515,11 +515,12 @@ kubectl get all -n k8sapp -o wide
 
 # Deploying the Redis master
 
+	```
 kubectl create ns k8sdb
 kubectl apply -f https://raw.githubusercontent.com/bvijaycom/Hands-on-Kubernetes-on-Azure-Third-Edition/main/Chapter03/redis-master-deployment.yaml -ns k8sdb
 	
 watch -n 1 kubectl get all -o wide -n k8sdb
-
+```
 
 	
 - Now You have now launched a Redis master with the default configuration. Typically, you would launch an application with an environment-specific configuration.

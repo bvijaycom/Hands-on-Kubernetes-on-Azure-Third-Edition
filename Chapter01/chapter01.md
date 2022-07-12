@@ -531,3 +531,39 @@ version, which you can do by running the following command:
 kubectl delete deployment/redis-master -n k8sdb
 ```
 
+# Redis master with a ConfigMap
+
+**What is config Map** ** What is the use of it**
+
+
+
+A ConfigMap is a portable way of configuring containers without having specialized images for each environment. It has a key-value pair for data that needs to be set on a container. A ConfigMap is used for non-sensitive configuration. Kubernetes has a separate object called a Secret. A Secret is used for configurations that
+contain critical data such as passwords.
+
+- now create your ConfigMap via the following command
+```
+kubectl apply -f https://raw.githubusercontent.com/bvijaycom/Hands-on-Kubernetes-on-Azure-Third-Edition/main/Chapter03/example-redis-config.yaml -n k8sdb
+	
+kubectl describe configmap/example-redis-config -n k8sdb
+```
+
+	
+kubectl apply -f https://raw.githubusercontent.com/bvijaycom/Hands-on-Kubernetes-on-Azure-Third-Edition/main/Chapter03/redis-master-deployment_Modified.yaml -n k8sdb 
+	
+watch -n 1 kubectl get all -n k8sdb -o wide
+
+- from above command output get the pod name 
+- Then exec into the pod and verify that the settings were applied:
+	
+kubectl exec -it redis-master-766c5cf5c8-wzq9t -n k8sdb -- redis-cli
+	
+This open a redis-cli session with the running pod. Now you can get the
+maxmemory configuration:
+
+CONFIG GET maxmemory
+	
+And then you can get the maxmemory-policy configuration:
+CONFIG GET maxmemory-policy
+
+To summarize, you have just performed an important part of configuring cloudnative applications, namely providing dynamic configuration data to an application.
+You will have also noticed that the apps have to be configured to read config dynamically. After you set up your app with configuration

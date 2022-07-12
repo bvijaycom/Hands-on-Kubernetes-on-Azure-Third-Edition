@@ -567,3 +567,60 @@ CONFIG GET maxmemory-policy
 
 To summarize, you have just performed an important part of configuring cloudnative applications, namely providing dynamic configuration data to an application.
 You will have also noticed that the apps have to be configured to read config dynamically. After you set up your app with configuration
+	
+# Exposing the Redis master service
+
+kubectl apply -f https://raw.githubusercontent.com/bvijaycom/Hands-on-Kubernetes-on-Azure-Third-Edition/main/Chapter03/redis-master-service.yaml -n k8sdb
+	
+- now login inside redis pod and test the DNS name with pinging
+
+
+kubectl exec -it redis-master-766c5cf5c8-wzq9t bash -n k8sdb
+
+ping redis-master
+
+press ctrl + C
+
+# Deploying the Redis replicas
+
+Running a single back end on the cloud is not recommended. You can configure Redis in a leader-follower (master-slave) setup. This means that you can have
+a master that will serve write traffic and multiple replicas that can handle read traffic. It is useful for handling increased read traffic and high availability.
+Let's set this up:
+
+- 1. Create the deployment by running the following command:
+```
+kubectl apply -f https://raw.githubusercontent.com/bvijaycom/Hands-on-Kubernetes-on-Azure-Third-Edition/main/Chapter03/redis-replica-deployment.yaml -n k8sdb
+```
+
+- Like the master service, you need to expose the replica service by running the following:
+```
+kubectl apply -f https://raw.githubusercontent.com/bvijaycom/Hands-on-Kubernetes-on-Azure-Third-Edition/main/Chapter03/redis-replica-service.yaml -n k8sdb
+```
+- The only difference between this service and the redis-master service is that this service proxies traffic to pods that have the role:replica label.
+
+  - now if you login to the redis master pod and try to ping **redis-replica** 
+```
+  kubectl exec -it redis-master-766c5cf5c8-wzq9t bash -n k8sdb
+  
+  ping redis-replica
+```
+  
+# Deploying and exposing the front end
+- Up to now, you have focused on the Redis back end. Now you are ready to deploy the front end. This will add a graphical web page to your application that you'll be
+able to interact with.
+
+```
+kubectl apply -f https://raw.githubusercontent.com/bvijaycom/Hands-on-Kubernetes-on-Azure-Third-Edition/main/Chapter03/frontend-deployment.yaml -n k8sdb
+
+```
+
+# Exposing the front-end service
+
+kubectl apply -f https://raw.githubusercontent.com/bvijaycom/Hands-on-Kubernetes-on-Azure-Third-Edition/main/Chapter03/frontend-service.yaml -n k8sdb
+
+watch -n 1 kubectl get all -n k8sdb -o wide
+  
+- take the frontend service public IP and access it from any browser in internet
+
+- **Congratulations – you have completed your first fully deployed, multi-tier,cloud-native Kubernetes application**
+  

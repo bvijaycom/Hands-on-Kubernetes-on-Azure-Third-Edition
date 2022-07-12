@@ -504,7 +504,13 @@ kubectl get service azure-vote-front -n dev
 
 # Demo Application Deployment
 	
-kubectl apply -f https://raw.githubusercontent.com/bvijaycom/Hands-on-Kubernetes-on-Azure-Third-Edition/main/Chapter02/azure-vote.yaml -n testing
-kubectl get all -n testing -o wide
+```
+kubectl create ns k8sapp
+kubectl apply -f https://raw.githubusercontent.com/bvijaycom/Hands-on-Kubernetes-on-Azure-Third-Edition/main/Chapter02/azure-vote.yaml -n k8sapp
+kubectl get all -n k8sapp -o wide
+
+```
+
+
 
 

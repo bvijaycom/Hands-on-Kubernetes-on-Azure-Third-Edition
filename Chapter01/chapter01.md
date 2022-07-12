@@ -511,6 +511,22 @@ kubectl get all -n k8sapp -o wide
 
 ```
 
+# Class 3
+
+# Deploying the Redis master
+
+kubectl create ns k8sdb
+kubectl apply -f https://raw.githubusercontent.com/bvijaycom/Hands-on-Kubernetes-on-Azure-Third-Edition/main/Chapter03/redis-master-deployment.yaml -ns k8sdb
+	
+watch -n 1 kubectl get all -o wide -n k8sdb
 
 
+	
+- Now You have now launched a Redis master with the default configuration. Typically, you would launch an application with an environment-specific configuration.
+In the next section, you will get acquainted with a new concept called ConfigMaps and then recreate the Redis master. So, before proceeding, clean up the current
+version, which you can do by running the following command:
+
+```
+kubectl delete deployment/redis-master -n k8sdb
+```
 
